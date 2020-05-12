@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+#Stock API
+#Author: Nicolai Rader <github@nicolairader.de>
+
+
+import mysql.connector
+import time
+import requests
+import os
+
+mysqldb_container = os.environ['DB_CONTAINER']
+mysqldb_schema = os.environ['DB_SCHEMA']
+mysqldb_username = os.environ['DB_USER']
+mysqldb_password = os.environ['DB_PASSWORD']
+
+mysqldb = mysql.connector.connect(
+  host=mysqldb_container,
+  user=mysqldb_username,
+  passwd=mysqldb_password,
+  database=mysqldb_schema
+)
+mysqlcursor = mysqldb.cursor()
+
+#Function for generic database inserts
+def db_insert(sql, val):
+    try:
+      mysqlcursor.execute(sql, val)
+      mysqldb.commit()
+      print("Record inserted.")
+      return mysqlcursor.lastrowid
+    except Exception as e:
+      print(e)
+      print("Aborting processing")
+
+#Function for generic database selects
+def db_select(sql, val):
+    mysqlcursor.execute(sql, val)
+    result = mysqlcursor.fetchone()
+    if result is None:
+      return None
+    else:
+      return result[0]
+
+#Infinite loop
+while 1 == 1:
+  #query table stock for configured stocks to monitor
+  try:
+    mysqlcursor.execute("SELECT stock_id, symbol FROM stock")
+    myresult = mysqlcursor.fetchall()
+  except:
+    print("An exception occured!")
+  for res in myresult:
+    try:
+      #perform request to yahoos finance API
+      r = requests.get('https://query1.finance.yahoo.com/v7/finance/options/'+res[1]).json()
+      r = r['optionChain']['result'][0]['quote']['regularMarketPrice']
+      #Prepare and execute insert into database
+      sql = (
+       "INSERT INTO stock_value (stock_id, value) "
+       "VALUES (%s, %s)"
+      )
+      val = (res[0], r)
+      db_insert(sql, val)
+    except:
+      print("An exception occured!")
+  #wait specific time for next requests to api
+  sql = (
+   "SELECT value from config "
+   "WHERE parameter = %s"
+  )
+  val = ('refresh_interval',)
+  #Get value from db how long to wait for next data-fetch
+  sleeptime = db_select(sql, val)
+  print("sleep for", sleeptime, "seconds")
+  time.sleep(int(sleeptime))

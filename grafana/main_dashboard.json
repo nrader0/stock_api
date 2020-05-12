@@ -1,0 +1,6262 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 16,
+  "iteration": 1588625957139,
+  "links": [],
+  "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 90,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select (sum(new.value)/sum(old.value))-1 from \r\n(\r\n  select so.company, jo.value from (\r\n    select company, min(added_at) added_at from v_stock_value group by company\r\n  ) so\r\n  join v_stock_value jo on so.company=jo.company and so.added_at = jo.added_at\r\n) old\r\n,\r\n(\r\n  select sn.company, jn.value from (\r\n    select company, max(added_at) added_at from v_stock_value group by company\r\n  ) sn\r\n  join v_stock_value jn on sn.company=jn.company and sn.added_at=jn.added_at\r\n) new\r\nwhere old.company = new.company and new.company in($stock)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent of selected stocks",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 62,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select sum(new.value-old.value) value from \r\n(\r\n  select so.company, jo.value from (\r\n    select company, min(added_at) added_at from v_stock_value group by company\r\n  ) so\r\n  join v_stock_value jo on so.company=jo.company and so.added_at = jo.added_at\r\n) old\r\n,\r\n(\r\n  select sn.company, jn.value from (\r\n    select company, max(added_at) added_at from v_stock_value group by company\r\n  ) sn\r\n  join v_stock_value jn on sn.company=jn.company and sn.added_at=jn.added_at\r\n) new\r\nwhere old.company = new.company and new.company in ($stock)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute of selected stocks",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 0,
+        "y": 2
+      },
+      "id": 241,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": "stock",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "\nAlibaba Group Holding Limited",
+          "value": "\nAlibaba Group Holding Limited"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 1.7142857142857142,
+        "y": 2
+      },
+      "id": 283,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Advanced Micro Devices, Inc.",
+          "value": "Advanced Micro Devices, Inc."
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 3.4285714285714284,
+        "y": 2
+      },
+      "id": 284,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Allianz SE",
+          "value": "Allianz SE"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 5.142857142857142,
+        "y": 2
+      },
+      "id": 285,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Apple Inc.",
+          "value": "Apple Inc."
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 6.857142857142857,
+        "y": 2
+      },
+      "id": 286,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Autodesk, Inc.",
+          "value": "Autodesk, Inc."
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 8.571428571428571,
+        "y": 2
+      },
+      "id": 287,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cancom SE",
+          "value": "Cancom SE"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 10.285714285714285,
+        "y": 2
+      },
+      "id": 288,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Carnival Corporation & Plc",
+          "value": "Carnival Corporation & Plc"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 11.999999999999998,
+        "y": 2
+      },
+      "id": 289,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cisco Systems, Inc.",
+          "value": "Cisco Systems, Inc."
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 13.714285714285712,
+        "y": 2
+      },
+      "id": 290,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Microsoft Corporation",
+          "value": "Microsoft Corporation"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 15.428571428571425,
+        "y": 2
+      },
+      "id": 291,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Oracle Corporation",
+          "value": "Oracle Corporation"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 17.14285714285714,
+        "y": 2
+      },
+      "id": 292,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Pfizer Inc.",
+          "value": "Pfizer Inc."
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 18.857142857142854,
+        "y": 2
+      },
+      "id": 293,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "SAP SE",
+          "value": "SAP SE"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 20.57142857142857,
+        "y": 2
+      },
+      "id": 294,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "The Coca-Cola Company",
+          "value": "The Coca-Cola Company"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "content": "**$stock**",
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 22.285714285714285,
+        "y": 2
+      },
+      "id": 295,
+      "maxPerRow": 24,
+      "mode": "markdown",
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 241,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "adidas AG",
+          "value": "adidas AG"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  date_added AS \"time\",\n  oilwertid\nFROM oil_wert\nWHERE\n  $__timeFilter(date_added)\nORDER BY date_added",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "text"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 0,
+        "y": 4
+      },
+      "id": 159,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": "stock",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "\nAlibaba Group Holding Limited",
+          "value": "\nAlibaba Group Holding Limited"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 1.7142857142857142,
+        "y": 4
+      },
+      "id": 296,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Advanced Micro Devices, Inc.",
+          "value": "Advanced Micro Devices, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 3.4285714285714284,
+        "y": 4
+      },
+      "id": 297,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Allianz SE",
+          "value": "Allianz SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 5.142857142857142,
+        "y": 4
+      },
+      "id": 298,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Apple Inc.",
+          "value": "Apple Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 6.857142857142857,
+        "y": 4
+      },
+      "id": 299,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Autodesk, Inc.",
+          "value": "Autodesk, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 8.571428571428571,
+        "y": 4
+      },
+      "id": 300,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cancom SE",
+          "value": "Cancom SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 10.285714285714285,
+        "y": 4
+      },
+      "id": 301,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Carnival Corporation & Plc",
+          "value": "Carnival Corporation & Plc"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 11.999999999999998,
+        "y": 4
+      },
+      "id": 302,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cisco Systems, Inc.",
+          "value": "Cisco Systems, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 13.714285714285712,
+        "y": 4
+      },
+      "id": 303,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Microsoft Corporation",
+          "value": "Microsoft Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 15.428571428571425,
+        "y": 4
+      },
+      "id": 304,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Oracle Corporation",
+          "value": "Oracle Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 17.14285714285714,
+        "y": 4
+      },
+      "id": 305,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Pfizer Inc.",
+          "value": "Pfizer Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 18.857142857142854,
+        "y": 4
+      },
+      "id": 306,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "SAP SE",
+          "value": "SAP SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 20.57142857142857,
+        "y": 4
+      },
+      "id": 307,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "The Coca-Cola Company",
+          "value": "The Coca-Cola Company"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 22.285714285714285,
+        "y": 4
+      },
+      "id": 308,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 159,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "adidas AG",
+          "value": "adidas AG"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "diff",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, diff from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "-1,0.5",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Absolute",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 0,
+        "y": 6
+      },
+      "id": 118,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": "stock",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "\nAlibaba Group Holding Limited",
+          "value": "\nAlibaba Group Holding Limited"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 1.7142857142857142,
+        "y": 6
+      },
+      "id": 309,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Advanced Micro Devices, Inc.",
+          "value": "Advanced Micro Devices, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 3.4285714285714284,
+        "y": 6
+      },
+      "id": 310,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Allianz SE",
+          "value": "Allianz SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 5.142857142857142,
+        "y": 6
+      },
+      "id": 311,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Apple Inc.",
+          "value": "Apple Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 6.857142857142857,
+        "y": 6
+      },
+      "id": 312,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Autodesk, Inc.",
+          "value": "Autodesk, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 8.571428571428571,
+        "y": 6
+      },
+      "id": 313,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cancom SE",
+          "value": "Cancom SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 10.285714285714285,
+        "y": 6
+      },
+      "id": 314,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Carnival Corporation & Plc",
+          "value": "Carnival Corporation & Plc"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 11.999999999999998,
+        "y": 6
+      },
+      "id": 315,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cisco Systems, Inc.",
+          "value": "Cisco Systems, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 13.714285714285712,
+        "y": 6
+      },
+      "id": 316,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Microsoft Corporation",
+          "value": "Microsoft Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 15.428571428571425,
+        "y": 6
+      },
+      "id": 317,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Oracle Corporation",
+          "value": "Oracle Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 17.14285714285714,
+        "y": 6
+      },
+      "id": 318,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Pfizer Inc.",
+          "value": "Pfizer Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 18.857142857142854,
+        "y": 6
+      },
+      "id": 319,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "SAP SE",
+          "value": "SAP SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 20.57142857142857,
+        "y": 6
+      },
+      "id": 320,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "The Coca-Cola Company",
+          "value": "The Coca-Cola Company"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 22.285714285714285,
+        "y": 6
+      },
+      "id": 321,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 118,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "adidas AG",
+          "value": "adidas AG"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select company, perc from v_profit where company = $stock",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Percent",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 0,
+        "y": 8
+      },
+      "id": 282,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": "stock",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "\nAlibaba Group Holding Limited",
+          "value": "\nAlibaba Group Holding Limited"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 1.7142857142857142,
+        "y": 8
+      },
+      "id": 322,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Advanced Micro Devices, Inc.",
+          "value": "Advanced Micro Devices, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 3.4285714285714284,
+        "y": 8
+      },
+      "id": 323,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Allianz SE",
+          "value": "Allianz SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 5.142857142857142,
+        "y": 8
+      },
+      "id": 324,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Apple Inc.",
+          "value": "Apple Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 6.857142857142857,
+        "y": 8
+      },
+      "id": 325,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Autodesk, Inc.",
+          "value": "Autodesk, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 8.571428571428571,
+        "y": 8
+      },
+      "id": 326,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cancom SE",
+          "value": "Cancom SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 10.285714285714285,
+        "y": 8
+      },
+      "id": 327,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Carnival Corporation & Plc",
+          "value": "Carnival Corporation & Plc"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 11.999999999999998,
+        "y": 8
+      },
+      "id": 328,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Cisco Systems, Inc.",
+          "value": "Cisco Systems, Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 13.714285714285712,
+        "y": 8
+      },
+      "id": 329,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Microsoft Corporation",
+          "value": "Microsoft Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 15.428571428571425,
+        "y": 8
+      },
+      "id": 330,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Oracle Corporation",
+          "value": "Oracle Corporation"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 17.14285714285714,
+        "y": 8
+      },
+      "id": 331,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "Pfizer Inc.",
+          "value": "Pfizer Inc."
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 18.857142857142854,
+        "y": 8
+      },
+      "id": 332,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "SAP SE",
+          "value": "SAP SE"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 20.57142857142857,
+        "y": 8
+      },
+      "id": 333,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "The Coca-Cola Company",
+          "value": "The Coca-Cola Company"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "stock@MySQL@docker",
+      "decimals": 2,
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 1.7142857142857142,
+        "x": 22.285714285714285,
+        "y": 8
+      },
+      "id": 334,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 24,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1588625957139,
+      "repeatPanelId": 282,
+      "scopedVars": {
+        "stock": {
+          "selected": false,
+          "text": "adidas AG",
+          "value": "adidas AG"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "perc",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\ts.company                               AS company,\n\tROUND((new.value - old.value), 2)       AS diff   ,\n\tROUND(((new.value / old.value) - 1), 4) AS perc\nFROM\n\t((\n\t(\n\t\tSELECT\n\t\t\tso.stock_id AS stock_id,\n\t\t\tjo.value    AS value\n\t\tFROM\n\t\t\t(\n\t\t\t(\n\t\t\t\tSELECT\n\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\tMIN(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\tFROM\n\t\t\t\t\tstock_value\n\t\t\t\twhere $__timeFilter(added_at)\n\t\t\t\tGROUP BY\n\t\t\t\t\tstock_value.stock_id\n\t\t\t)\n\t\t\t`so`\n\t\t\tJOIN\n\t\t\t\tstock_value jo\n\t\t\t\tON\n\t\t\t\t\t(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_id = jo.stock_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\tso.stock_value_id = jo.stock_value_id\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t)\n\t\t\t)\n\t)\n\told\n\tJOIN\n\t\t(\n\t\t\tSELECT\n\t\t\t\tsn.stock_id AS stock_id,\n\t\t\t\tjn.value    AS value\n\t\t\tFROM\n\t\t\t\t(\n\t\t\t\t(\n\t\t\t\t\tSELECT\n\t\t\t\t\t\tstock_value.stock_id            AS stock_id,\n\t\t\t\t\t\tMAX(stock_value.stock_value_id) AS stock_value_id\n\t\t\t\t\tFROM\n\t\t\t\t\t\tstock_value\n\t\t\t\t\tGROUP BY\n\t\t\t\t\t\tstock_value.stock_id\n\t\t\t\t)\n\t\t\t\tsn\n\t\t\t\tJOIN\n\t\t\t\t\tstock_value jn\n\t\t\t\t\tON\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_id = jn.stock_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\tAND\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\tsn.stock_value_id = jn.stock_value_id\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t)\n\t\t)\n\t\tnew)\n\tJOIN\n\t\tstock s)\nWHERE\n\t(\n\t\t(\n\t\t\told.stock_id = new.stock_id\n\t\t)\n\t\tAND\n\t\t(\n\t\t\ts.stock_id = new.stock_id\n\t\t) and company = $stock\n\t)\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "oilwertid"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "oil_wert",
+          "timeColumn": "date_added",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TimeRange",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "first"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "stock@MySQL@docker",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "hiddenSeries": false,
+      "id": 200,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "symbol",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  added_at AS \"time\",\n  company AS metric,\n  value\nFROM v_stock_value\nWHERE\n  $__timeFilter(added_at) AND\n  company in($stock)\nORDER BY added_at",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "v_stock_value",
+          "timeColumn": "added_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "varchar",
+              "name": "",
+              "params": [
+                "company",
+                "=",
+                "$stock"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Graph of $stock",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 1,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "1h",
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "stock@MySQL@docker",
+        "definition": "select company from v_stock_value;",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": "Stock",
+        "multi": true,
+        "name": "stock",
+        "options": [],
+        "query": "select company from v_stock_value;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Stocks",
+  "uid": "RBrutIfZz",
+  "variables": {
+    "list": []
+  },
+  "version": 126
+}
